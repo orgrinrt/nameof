@@ -66,18 +66,18 @@ BOOST_AUTO_TEST_CASE(function) {
     void _foo1();
     name = nameof(&_foo1);
     BOOST_REQUIRE_EQUAL(name, "_foo1");
-    
+
     void _();
     name = nameof(&_);
     BOOST_REQUIRE_EQUAL(name, "_");
 }
 
 BOOST_AUTO_TEST_CASE(enumElement) {
-    enum Foo {Bar};
+    enum Foo { Bar };
     std::string name = nameof(Foo::Bar);
     BOOST_REQUIRE_EQUAL(name, "Bar");
 
-    enum _Foo1 {_Bar1};
+    enum _Foo1 { _Bar1 };
     name = nameof(_Foo1::_Bar1);
     BOOST_REQUIRE_EQUAL(name, "_Bar1");
 }
@@ -89,33 +89,37 @@ BOOST_AUTO_TEST_CASE(class_) {
 }
 
 BOOST_AUTO_TEST_CASE(method) {
-    struct Foo { int bar(); };
+    struct Foo {
+        int bar();
+    };
     std::string name = nameof(&Foo::bar);
     BOOST_REQUIRE_EQUAL(name, "bar");
 }
 
 BOOST_AUTO_TEST_CASE(classField) {
-    struct Foo { int bar; };
+    struct Foo {
+        int bar;
+    };
     std::string name = nameof(Foo::bar);
     BOOST_REQUIRE_EQUAL(name, "bar");
 }
 
 BOOST_AUTO_TEST_CASE(objectField) {
-    struct Foo { int bar; };
+    struct Foo {
+        int bar;
+    };
     Foo foo;
     std::string name = nameof(foo.bar);
     BOOST_REQUIRE_EQUAL(name, "bar");
 }
 
 BOOST_AUTO_TEST_CASE(nesting) {
-    struct Foo1
-    {
-        struct Foo2
-        {
-            Foo1* foo1;
+    struct Foo1 {
+        struct Foo2 {
+            Foo1 *foo1;
         };
 
-        Foo1* foo1;
+        Foo1 *foo1;
         Foo2 foo2;
     };
     std::string name = nameof(Foo1::foo1->foo2.foo1);
@@ -130,7 +134,7 @@ BOOST_AUTO_TEST_CASE(exceptions) {
     int foo1();
     BOOST_REQUIRE_THROW(nameof(foo1()), std::logic_error);
 
-    int* foo2;
+    int *foo2;
     BOOST_REQUIRE_THROW(nameof(*foo2), std::logic_error);
     BOOST_REQUIRE_THROW(nameof(foo2 + 1), std::logic_error);
 }
